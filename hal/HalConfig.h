@@ -9,6 +9,7 @@
 #define HAL_WIFI_RESET_PIN   0x10
 #define HAL_WIFI_RELOAD_PIN  0x11
 #define HAL_WIFI_READY_PIN   0x25
+#define HAL_WIFI_LINK_PIN    0x24
 #define HAL_WIFI_DEFAULT_BAUDRATE 115200
 
 #define KB(x) ((x)*1024)

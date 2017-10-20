@@ -8,12 +8,18 @@
 #include "Motor.h"
 
 static uint8_t g_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+static const char g_version[] = "1.0.0.2";
 
 //redirect "printf()"
 int fputc(int ch, FILE *f)
 {
 	HalUartWrite(SYS_UART_LOGS_PORT, (const uint8_t *)&ch, 1);
 	return ch;
+}
+
+const char *SysGetVersion(void)
+{
+    return g_version;
 }
 
 const uint8_t *SysGetMacAddr(void)
@@ -30,12 +36,12 @@ void SysSetMacAddr(const uint8_t *mac)
 
 const char *SysGetServerUrl(void)
 {
-    return "192.168.123.194";
+    return "Dev.FriBox.cn";
 }
 
 uint16_t SysGetServerPort(void)
 {
-    return 10086;
+    return 17380;
 }
 
 void SysStatusLedSet(uint8_t blink)
@@ -85,7 +91,7 @@ void SysInitialize(void)
     IRInitialize();
     WifiInitialize();
     MotorInitialize();
-    SysLog("");
+    SysLog("version %s", SysGetVersion());
 
     SysTimerSet(testWifi, 1500, 0, NULL);
 }

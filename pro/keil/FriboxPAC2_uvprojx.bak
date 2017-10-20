@@ -437,6 +437,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\app\Wifi.c</FilePath>
             </File>
+            <File>
+              <FileName>Motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\Motor.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

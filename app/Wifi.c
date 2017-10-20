@@ -28,11 +28,33 @@ typedef enum
     CMD_ID_NONE = 0,
     CMD_ID_3PLUS,     //+++
     CMD_ID_ENTM,      //从命令模式切换到透传模式
+    
     CMD_ID_WMODE,     //设置/查询 WIFI 操作模式（AP/STA/APSTA）
+    CMD_ID_WAP,       //网络名称（SSID）: FriBoxPac2-0001
+    CMD_ID_WAKEY,     //网络密码 (8-63位): FriBoxPac2
+    CMD_ID_LANN,      //网络IP: 192.168.150.254
+    
+    //socket A
     CMD_ID_NETP,      //设置/查询网络协议参数
     CMD_ID_TCPTO,     //设置/查询超时时间
+    //socket B
+    CMD_ID_SOCKB,
+    CMD_ID_TCPTOB,
+
+    CMD_ID_WEBU,      //系统管理：用户名: fribox , 密码: fribox
+    CMD_ID_SEARCH,    //搜索端口：17381 ， 
+    CMD_ID_ASWD,      //搜索命令字：FriBox
+
+    CMD_ID_WRMID,     //设置MID：FriBoxPac2-0001
+
+    CMD_ID_NTPEN,     //打开ntp时间同步
+    CMD_ID_NTPSER,    //设置时间服务器
+    CMD_ID_NTPRF,     //30分钟同步一次
+    CMD_ID_NTPTM,     //查看是否同步成功
+    
     CMD_ID_SMTSL,     //设置智能配网方式
     CMD_ID_SMTLK,     //启动 Simple Config 功能
+    
     CMD_ID_WSMAC,     //查询 STA 的 MAC 地址参数
     CMD_ID_WSLQ,      //查询 STA 的无线信号强度
     CMD_ID_WSCAN,     //搜索 AP
@@ -76,7 +98,7 @@ static uint8_t *getMacAddr(char *msg, uint8_t *mac)
     SysLog("%s", msg);
     for(i = 0; i < 6; i++)
     {
-        memcpy(val, &mac[i*2], 2);
+        memcpy(val, &msg[i*2], 2);
         mac[i] = (uint8_t)(uint32_t)strtol(val, NULL, 16);
     }
     return mac;
@@ -108,7 +130,7 @@ static void atCmdParse(const char *atcmd)
     uint8_t mac[6];
     char buff[64] = "";
 
-    //SysLog("%s", atcmd);
+    //SysPrintf("%s\n", atcmd);
     
     switch(g_currentCmdID)
     {
@@ -126,23 +148,114 @@ static void atCmdParse(const char *atcmd)
             if(strstr(atcmd, "+ok"))
             {
                 delCmd = true;
-                sprintf(buff, "AT+NETP=TCP,CLIENT,%d,%s\r", SysGetServerPort(), SysGetServerUrl());
-                cmdSend(buff, 3, 500, CMD_ID_NETP);
+                sprintf(buff, "AT+WAP=11BGN,FriBoxPac2-%02x%02x,CH6\r", SysGetMacAddr()[4], SysGetMacAddr()[5]);
+                cmdSend(buff, 3, 500, CMD_ID_WAP);
+                //sprintf(buff, "AT+NETP=TCP,CLIENT,%d,%s\r", SysGetServerPort(), SysGetServerUrl());
+                //cmdSend(buff, 3, 500, CMD_ID_NETP);
+            }
+            break;
+        case CMD_ID_WAP:
+            if(strstr(atcmd, "+ok"))
+            {
+                delCmd = true;
+                cmdSend("AT+WAKEY=WPA2PSK,AES,FriBoxPac2\r", 3, 500, CMD_ID_WAKEY);
+            }
+            break;
+        case CMD_ID_WAKEY:
+            if(strstr(atcmd, "+ok"))
+            {
+                delCmd = true;
+                cmdSend("AT+LANN=192.168.150.254,255.255.255.0\r", 3, 500, CMD_ID_LANN);
+            }
+            break;
+        case CMD_ID_LANN:
+            if(strstr(atcmd, "+ok"))
+            {
+                delCmd = true;
+                cmdSend("AT+NETP=TCP,SERVER,17380,0.0.0.0\r", 3, 500, CMD_ID_NETP);
             }
             break;
         case CMD_ID_NETP:
             if(strstr(atcmd, "+ok"))
             {
-                cmdSend("AT+TCPTO=60\r", 3, 500, CMD_ID_TCPTO);
+                cmdSend("AT+TCPTO=0\r", 3, 500, CMD_ID_TCPTO);
                 delCmd = true;
             }
             break;
         case CMD_ID_TCPTO:
             if(strstr(atcmd, "+ok"))
             {
+                sprintf(buff, "AT+SOCKB=TCP,%d,%s\r", SysGetServerPort(), SysGetServerUrl());
+                cmdSend(buff, 3, 500, CMD_ID_SOCKB);
+                //cmdSend("AT+SMTSL=air\r", 3, 500, CMD_ID_SMTSL);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_SOCKB:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+TCPTOB=0\r", 3, 500, CMD_ID_TCPTOB);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_TCPTOB:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+WEBU=fribox,fribox\r", 3, 500, CMD_ID_WEBU);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_WEBU:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+SEARCH=17381\r", 3, 500, CMD_ID_SEARCH);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_SEARCH:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+ASWD=FriBox\r", 3, 500, CMD_ID_ASWD);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_ASWD:
+            if(strstr(atcmd, "+ok"))
+            {
+                sprintf(buff, "AT+WRMID=FriBoxPac2-%02x%02x\r", SysGetMacAddr()[4], SysGetMacAddr()[5]);
+                cmdSend(buff, 3, 500, CMD_ID_WRMID);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_WRMID:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+NTPEN=on\r", 3, 500, CMD_ID_NTPEN);
+                delCmd = true;
+            }
+            break; 
+        case CMD_ID_NTPEN:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+NTPSER=cn.pool.ntp.org,8\r", 3, 500, CMD_ID_NTPSER);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_NTPSER:
+            if(strstr(atcmd, "+ok"))
+            {
+                cmdSend("AT+NTPRF=30\r", 3, 500, CMD_ID_NTPRF);
+                delCmd = true;
+            }
+            break;
+        case CMD_ID_NTPRF:
+            if(strstr(atcmd, "+ok"))
+            {
                 cmdSend("AT+SMTSL=air\r", 3, 500, CMD_ID_SMTSL);
                 delCmd = true;
             }
+            break;
+        case CMD_ID_NTPTM:
             break;
         case CMD_ID_SMTSL:
             if(strstr(atcmd, "+ok"))
@@ -158,7 +271,7 @@ static void atCmdParse(const char *atcmd)
             if(pos)
             {
                 SysSetMacAddr(getMacAddr(strchr(pos, '=') + 1, mac));
-                cmdSend("AT+WMODE=STA\r", 3, 500, CMD_ID_WMODE);
+                cmdSend("AT+WMODE=APSTA\r", 3, 500, CMD_ID_WMODE);
                 delCmd = true;
             }
             break;

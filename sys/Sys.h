@@ -35,6 +35,7 @@ typedef struct
     uint16_t msec;
 }SysDateTime_t;
 
+const char *SysGetVersion(void);
 void SysSetMacAddr(const uint8_t *mac);
 const uint8_t *SysGetMacAddr(void);
 const char *SysGetServerUrl(void);
