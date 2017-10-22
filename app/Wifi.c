@@ -1,5 +1,6 @@
 #include "Wifi.h"
 #include "VTList.h"
+#include "VTStaticQueue.h"
 #include "SysTimer.h"
 
 #define WIFI_RECV_BUFF_LEN  64
@@ -75,12 +76,14 @@ typedef struct WifiCmdList_st
 }WifiCmdList_t;
 
 static WifiMode_t g_wifiWorkMode = WIFI_MODE_NONE;
+static bool g_netConfigStart = false;
 //static WifiMode_t g_wifiSetMode = WIFI_MODE_PASSTHROUGH;
 static uint8_t g_buff[WIFI_RECV_BUFF_LEN];
 static uint16_t g_buffCount = 0;
 static WifiCmdEndFlag_t g_cmdWaitFlag = CMD_END_FLAG_NONE;
 static WifiCmdList_t g_cmdListHead;
 static WifiCmdID_t g_currentCmdID = CMD_ID_NONE;
+static VTSQueueDef(uint8_t, g_queue, 512);
 
 static void cmdSend(const char *cmd, uint8_t retries, uint16_t inteval, WifiCmdID_t id);
 
@@ -130,7 +133,7 @@ static void atCmdParse(const char *atcmd)
     uint8_t mac[6];
     char buff[64] = "";
 
-    //SysPrintf("%s\n", atcmd);
+    SysPrintf("%s\n", atcmd);
     
     switch(g_currentCmdID)
     {
@@ -265,6 +268,11 @@ static void atCmdParse(const char *atcmd)
             }
             break;
         case CMD_ID_SMTLK:
+            if(strstr(atcmd, "+ok"))
+            {
+                //event();//net config start...
+                delCmd = true;
+            }
             break;
         case CMD_ID_WSMAC:
             pos = strstr(atcmd, "+ok=");
@@ -387,6 +395,7 @@ static void cmdRecv(uint8_t byte)
     {
         if(byte == 0x0a)
         {
+            g_buff[g_buffCount] = '\0';
             atCmdParse((const char *)g_buff);
             g_buffCount = 0;
         }
@@ -398,10 +407,41 @@ static void cmdRecv(uint8_t byte)
     }
 }
 
+static void recvDataPoll(void)
+{
+    uint8_t byte;
+    
+    if(!VTSQueueIsEmpty(g_queue))
+    {
+        HalInterruptSet(false);
+        byte = VTSQueueFront(g_queue);
+        VTSQueuePop(g_queue);
+        HalInterruptSet(true);
+        
+        if(g_currentCmdID != CMD_ID_NONE)
+        {
+            cmdRecv(byte);
+        }
+        else
+        {
+            //ProtocolDataRecv(byte);
+            SysPrintf("%c", byte);
+        }
+    }
+}
+
 static void wifiRecvByte(uint8_t *data, uint16_t len)
 {
     uint16_t i;
 
+    for(i = 0; i < len; i++)
+    {
+        if(VTSQueueHasSpace(g_queue))
+        {
+            VTSQueuePush(g_queue, data[i]);
+        }
+    }
+#if 0
     for(i = 0; i < len; i++)
     {
         if(g_currentCmdID != CMD_ID_NONE)
@@ -414,6 +454,7 @@ static void wifiRecvByte(uint8_t *data, uint16_t len)
             SysPrintf("%c", data[i]);
         }
     }
+#endif
 }
 
 static void startCommandMode(void)
@@ -454,10 +495,21 @@ void WifiNetConfigStop(void)
 {
 }
 
-void WifiNetConfigStart(void)
+static void netConfigDone(void *args)
 {
     SysLog("");
-    startCommandMode();
+    g_netConfigStart = false;
+}
+
+void WifiNetConfigStart(void)
+{
+    if(!g_netConfigStart)
+    {
+        SysLog("");
+        g_netConfigStart = true;
+        startCommandMode();
+        SysTimerSet(netConfigDone, 60000, 0, NULL);
+    }
 }
 
 static void ioInit(void)
@@ -519,5 +571,6 @@ void WifiPoll(void)
 {
     cmdListPoll();
     moduleIsReady();
+    recvDataPoll();
 }
 

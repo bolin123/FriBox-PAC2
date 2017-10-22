@@ -8,33 +8,58 @@ Project File Date:  10/20/2017
 
 <h2>Output:</h2>
 Build target 'FriboxPAC2'
-compiling main.c...
-..\..\app\main.c(4): warning:  #177-D: function "testPrint" was declared but never referenced
-  static void testPrint(void)
-..\..\app\main.c: 1 warning, 0 errors
-compiling ili9341.c...
-..\..\app\display\ili9341.c(249): warning:  #177-D: function "ili9341DmaWriteData" was declared but never referenced
-  static void ili9341DmaWriteData(uint8_t *data, uint16_t len)
-..\..\app\display\ili9341.c(289): warning:  #177-D: function "bgr2rgb" was declared but never referenced
-  static uint16_t bgr2rgb(uint16_t c)
-..\..\app\display\ili9341.c(427): warning:  #177-D: function "ili9341DrawPoint" was declared but never referenced
-  static void ili9341DrawPoint(uint16_t x, uint16_t y)
-..\..\app\display\ili9341.c(434): warning:  #177-D: function "ili9341FastDrawPoint" was declared but never referenced
-  static void ili9341FastDrawPoint(uint16_t x, uint16_t y, uint16_t color)
-..\..\app\display\ili9341.c(448): warning:  #177-D: function "ili9341LCDFill" was declared but never referenced
-  static void ili9341LCDFill(uint16_t xsta, uint16_t ysta, uint16_t xend, uint16_t yend, uint16_t color)
-..\..\app\display\ili9341.c: 5 warnings, 0 errors
-compiling Button.c...
-..\..\app\Button.c(13): warning:  #188-D: enumerated type mixed with another type
-  static MotorSpeedLevel_t g_speedlevel = 1;
-..\..\app\Button.c(64): warning:  #188-D: enumerated type mixed with another type
-                  g_speedlevel = 1;
-..\..\app\Button.c(71): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
-              Ili9341LCDDisplayString(0, 250, 24, 48, buff, LCD_COLOR_GRAY);
-..\..\app\Button.c: 3 warnings, 0 errors
-compiling PMS7003.c...
-..\..\app\PMS7003.c(49): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
-      Ili9341LCDDisplayString(0, 100, 24, 48, text, LCD_COLOR_GRAY);
+compiling Sys.c...
+linking...
+Program Size: Code=17196 RO-data=19012 RW-data=92 ZI-data=3972  
+FromELF: creating hex file...
+After Build - User command #1: xcopy *.hex Firmware /Y
+E:FriboxPAC2.hex
+复制了 1 个文件
+".\FriboxPAC2.axf" - 0 Error(s), 0 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.4.1.0.pack
+                ARM::CMSIS:CORE:3.30.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 3.30.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F1xx_DFP.2.1.0.pack
+                Keil::Device:Startup:1.0.0
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  E:\Project\FriBox PAC2\software\FriBox-PAC2\pro\keil\RTE
+  E:\Project\FriBox PAC2\software\FriBox-PAC2\pro\keil\RTE\Device\STM32F103R8
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.0\CMSIS\Include
+  C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0
+  C:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:3.30.0
+      Source file:   CMSIS\UserCodeTemplates\ARM\ITM_Retarget.c
+
+   * Component: Keil::Device:Startup:1.0.0
+      Source file:   Device\Source\ARM\STM32F1xx_OPT.s
+      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_stm32f10x.c
+</pre>
+</body>
+</html>
+ource\ARM\startup_stm32f10x_md.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_stm32f10x.c
+Load "E:\\Project\\FriBox PAC2\\software\\FriBox-PAC2\\pro\\keil\\FriboxPAC2.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+Application running ...
+;
 ..\..\app\PMS7003.c(51): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
       Ili9341LCDDisplayString(0, 150, 24, 48, text, LCD_COLOR_GRAY);
 ..\..\app\PMS7003.c: 2 warnings, 0 errors
@@ -43,7 +68,7 @@ compiling ir.c...
           Ili9341LCDDisplayString(0, 50, 24, 48, buff, LCD_COLOR_GRAY);
 ..\..\app\ir.c: 1 warning, 0 errors
 compiling Wifi.c...
-..\..\app\Wifi.c(432): warning:  #177-D: function "wifiChangeMode" was declared but never referenced
+..\..\app\Wifi.c(473): warning:  #177-D: function "wifiChangeMode" was declared but never referenced
   static void wifiChangeMode(WifiMode_t mode)
 ..\..\app\Wifi.c: 1 warning, 0 errors
 compiling Motor.c...
@@ -60,7 +85,7 @@ compiling HalCommon.c...
   static void ledPwmIoInit(void)
 ..\..\hal\HalCommon.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=17004 RO-data=19000 RW-data=88 ZI-data=3456  
+Program Size: Code=17236 RO-data=19012 RW-data=92 ZI-data=3972  
 FromELF: creating hex file...
 After Build - User command #1: xcopy *.hex Firmware /Y
 E:FriboxPAC2.hex

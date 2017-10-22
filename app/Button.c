@@ -42,35 +42,65 @@ static SysButtonState_t getButtonStatus(SysButton_t *button)
 static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonState_t state)
 {
     char buff[16] = "";
-    if(state == SYS_BUTTON_STATE_RELEASED && pressTime > 20)
+    static bool powerLongPress = false;
+    static bool gearLongPress = false;
+    
+    if(state == SYS_BUTTON_STATE_RELEASED)
+    {
+        if(pressTime > 20)
+        {
+            if(button == &g_powerButton)
+            {
+                g_poweron = !g_poweron;
+                if(g_poweron)
+                {
+                    Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:ON ", LCD_COLOR_GRAY);
+                }
+                else
+                {
+                    Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:OFF", LCD_COLOR_GRAY);
+                }
+            }
+            else if(button == &g_gearButton)
+            {
+                g_speedlevel++;
+                if(g_speedlevel > 3)
+                {
+                    g_speedlevel = 1;
+                }
+                MotorSpeedSet(1, g_speedlevel);
+                MotorSpeedSet(2, g_speedlevel);
+                MotorSpeedSet(3, g_speedlevel);
+                MotorSpeedSet(4, g_speedlevel);
+                sprintf(buff, "SPEED:%02d", g_speedlevel);
+                Ili9341LCDDisplayString(0, 250, 24, 48, buff, LCD_COLOR_GRAY);
+            }
+            return 1;
+        }
+    }
+    else
     {
         if(button == &g_powerButton)
         {
-            g_poweron = !g_poweron;
-            if(g_poweron)
+            if(pressTime > 5000)
             {
-                Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:ON ", LCD_COLOR_GRAY);
-            }
-            else
-            {
-                Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:OFF", LCD_COLOR_GRAY);
+                powerLongPress = true;
             }
         }
         else if(button == &g_gearButton)
         {
-            g_speedlevel++;
-            if(g_speedlevel > 3)
+            if(pressTime > 5000)
             {
-                g_speedlevel = 1;
+                gearLongPress = true;
             }
-            MotorSpeedSet(1, g_speedlevel);
-            MotorSpeedSet(2, g_speedlevel);
-            MotorSpeedSet(3, g_speedlevel);
-            MotorSpeedSet(4, g_speedlevel);
-            sprintf(buff, "SPEED:%02d", g_speedlevel);
-            Ili9341LCDDisplayString(0, 250, 24, 48, buff, LCD_COLOR_GRAY);
         }
-        return 1;
+
+        if(powerLongPress && gearLongPress)
+        {
+            SysNetConfigStart();
+            powerLongPress = false;
+            gearLongPress = false;
+        }
     }
     return 0;
 }

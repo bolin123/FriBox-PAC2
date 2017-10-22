@@ -8,7 +8,7 @@
 #include "Motor.h"
 
 static uint8_t g_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-static const char g_version[] = "1.0.0.2";
+static const char g_version[] = "1.0.0.3";
 
 //redirect "printf()"
 int fputc(int ch, FILE *f)
@@ -32,6 +32,11 @@ void SysSetMacAddr(const uint8_t *mac)
     memcpy(g_mac, mac, 6);
     
     SysLog("%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+}
+
+void SysNetConfigStart(void)
+{
+    WifiNetConfigStart();
 }
 
 const char *SysGetServerUrl(void)
@@ -72,14 +77,6 @@ static void sysLogOutputInit(void)
     HalUartConfig(SYS_UART_LOGS_PORT, &config);
 }
 
-static void testWifi(void *args)
-{
-    if(WifiGetWorkMode() == WIFI_MODE_PASSTHROUGH)
-    {
-        WifiNetConfigStart();
-    }
-}
-
 void SysInitialize(void)
 {
     HalCommonInitialize();
@@ -92,8 +89,6 @@ void SysInitialize(void)
     WifiInitialize();
     MotorInitialize();
     SysLog("version %s", SysGetVersion());
-
-    SysTimerSet(testWifi, 1500, 0, NULL);
 }
 
 void SysPoll(void)

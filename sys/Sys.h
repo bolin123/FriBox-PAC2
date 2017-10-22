@@ -40,6 +40,7 @@ void SysSetMacAddr(const uint8_t *mac);
 const uint8_t *SysGetMacAddr(void);
 const char *SysGetServerUrl(void);
 uint16_t SysGetServerPort(void);
+void SysNetConfigStart(void);
 void SysStatusLedSet(uint8_t blink);
 void SysSetDevType(char *type);
 const char *SysGetDevType(void);
