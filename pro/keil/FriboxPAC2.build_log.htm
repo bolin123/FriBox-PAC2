@@ -8,9 +8,9 @@ Project File Date:  10/20/2017
 
 <h2>Output:</h2>
 Build target 'FriboxPAC2'
-compiling Sys.c...
+compiling HalLED.c...
 linking...
-Program Size: Code=17196 RO-data=19012 RW-data=92 ZI-data=3972  
+Program Size: Code=17640 RO-data=19012 RW-data=96 ZI-data=3976  
 FromELF: creating hex file...
 After Build - User command #1: xcopy *.hex Firmware /Y
 E:FriboxPAC2.hex
@@ -45,21 +45,20 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:1.0.0
       Source file:   Device\Source\ARM\STM32F1xx_OPT.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_stm32f10x.c
       Source file:   Device\Source\ARM\startup_stm32f10x_md.s
-      Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\system_stm32f10x.c
-</pre>
-</body>
-</html>
-ource\ARM\startup_stm32f10x_md.s
-      Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\system_stm32f10x.c
 Load "E:\\Project\\FriBox PAC2\\software\\FriBox-PAC2\\pro\\keil\\FriboxPAC2.axf" 
 Erase Done.
 Programming Done.
 Verify OK.
 Application running ...
-;
+</pre>
+</body>
+</html>
+
+ype "char *" is incompatible with parameter of type "unsigned char *"
+      Ili9341LCDDisplayString(0, 100, 24, 48, text, LCD_COLOR_GRAY);
 ..\..\app\PMS7003.c(51): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
       Ili9341LCDDisplayString(0, 150, 24, 48, text, LCD_COLOR_GRAY);
 ..\..\app\PMS7003.c: 2 warnings, 0 errors
@@ -79,18 +78,31 @@ compiling SysTimer.c...
 ..\..\sys\SysTimer.c: 1 warning, 0 errors
 compiling SysButton.c...
 compiling HalCommon.c...
-..\..\hal\HalCommon.c(76): warning:  #177-D: function "ledPwmPoll" was declared but never referenced
-  static void ledPwmPoll(void)
-..\..\hal\HalCommon.c(100): warning:  #177-D: function "ledPwmIoInit" was declared but never referenced
-  static void ledPwmIoInit(void)
-..\..\hal\HalCommon.c: 2 warnings, 0 errors
-linking...
-Program Size: Code=17236 RO-data=19012 RW-data=92 ZI-data=3972  
-FromELF: creating hex file...
-After Build - User command #1: xcopy *.hex Firmware /Y
-E:FriboxPAC2.hex
-复制了 1 个文件
-".\FriboxPAC2.axf" - 0 Error(s), 16 Warning(s).
+compiling HalLED.c...
+..\..\hal\HalLED.c(11): warning:  #223-D: function "HalGPIOSetLevel" declared implicitly
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_HIGH_LEVEL);
+..\..\hal\HalLED.c(11): error:  #20: identifier "HAL_IO_HIGH_LEVEL" is undefined
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_HIGH_LEVEL);
+..\..\hal\HalLED.c(13): error:  #20: identifier "HAL_IO_LOW_LEVEL" is undefined
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_LOW_LEVEL);
+..\..\hal\HalLED.c(18): warning:  #223-D: function "HalGPIOSetLevel" declared implicitly
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_HIGH_LEVEL);
+..\..\hal\HalLED.c(18): error:  #20: identifier "HAL_IO_HIGH_LEVEL" is undefined
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_HIGH_LEVEL);
+..\..\hal\HalLED.c(20): error:  #20: identifier "HAL_IO_LOW_LEVEL" is undefined
+          HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_LOW_LEVEL);
+..\..\hal\HalLED.c(52): warning:  #223-D: function "HalGPIOConfig" declared implicitly
+      HalGPIOConfig(HAL_LED_CTRL_PIN, HAL_IO_OUTPUT);
+..\..\hal\HalLED.c(52): error:  #20: identifier "HAL_IO_OUTPUT" is undefined
+      HalGPIOConfig(HAL_LED_CTRL_PIN, HAL_IO_OUTPUT);
+..\..\hal\HalLED.c(53): error:  #20: identifier "HAL_IO_INPUT" is undefined
+      HalGPIOConfig(HAL_LED_DECT_PIN, HAL_IO_INPUT);
+..\..\hal\HalLED.c(55): warning:  #223-D: function "HalGPIOSetLevel" declared implicitly
+      HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_LOW_LEVEL);
+..\..\hal\HalLED.c(55): error:  #20: identifier "HAL_IO_LOW_LEVEL" is undefined
+      HalGPIOSetLevel(HAL_LED_CTRL_PIN, HAL_IO_LOW_LEVEL);
+..\..\hal\HalLED.c: 4 warnings, 7 errors
+".\FriboxPAC2.axf" - 7 Error(s), 18 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -120,11 +132,7 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:1.0.0
       Source file:   Device\Source\ARM\STM32F1xx_OPT.s
-      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Include file:  RTE_Driver\Config\RTE_Device.h
       Source file:   Device\Source\system_stm32f10x.c
-Load "E:\\Project\\FriBox PAC2\\software\\FriBox-PAC2\\pro\\keil\\FriboxPAC2.axf" 
-Erase Done.
-Programming Done.
-Verify OK.
-Application running ...
+      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
+Target not created

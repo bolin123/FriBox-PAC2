@@ -8,6 +8,7 @@
 #include "HalFlash.h"
 #include "HalPwm.h"
 #include "HalSPI.h"
+#include "HalLED.h"
 
 void HalCommonStatusLedSet(uint8_t blink);
 uint32_t HalGetSysTimeCount(void);

@@ -73,38 +73,6 @@ void HalInterruptSet(bool enable)
     }
 }
 
-static void ledPwmPoll(void)
-{
-    static SysTime_t lastPwmTime;
-    static uint8_t ioLevel = 0;
-
-    if(SysTimeHasPast(lastPwmTime, 10))
-    {
-        if(ioLevel)
-        {
-            HalGPIOSetLevel(0x18, 0);
-            HalGPIOSetLevel(0x19, 0);
-            ioLevel = 0;
-        }
-        else
-        {
-            HalGPIOSetLevel(0x18, 1);
-            HalGPIOSetLevel(0x19, 1);
-            ioLevel = 1;
-        }
-        lastPwmTime = SysTime();
-    }
-    
-}
-
-static void ledPwmIoInit(void)
-{
-    HalGPIOConfig(0x18, HAL_IO_OUTPUT);
-    HalGPIOConfig(0x19, HAL_IO_OUTPUT);
-    HalGPIOSetLevel(0x18, 0);
-    HalGPIOSetLevel(0x19, 0);
-}
-
 static void periphClockInit(void)
 {
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
@@ -125,6 +93,17 @@ static void periphClockInit(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 }
 
+static void ledBarTestPoll(void)
+{
+    static SysTime_t lastTime;
+
+    if(SysTimeHasPast(lastTime, 1000))
+    {
+        HalLEDTest();
+        lastTime = SysTime();
+    }
+}
+
 void HalCommonInitialize(void)
 {
     SystemInit();
@@ -135,8 +114,9 @@ void HalCommonInitialize(void)
     HalTimerInitialize();
     HalPwmInitialize();
     HalSPIInitialize();
+    HalLEDInitialize();
     statusLedInit();
-    //ledPwmIoInit();
+    HalLEDTest();
 }
 
 void HalCommonPoll(void)
@@ -146,7 +126,8 @@ void HalCommonPoll(void)
     HalTimerPoll();
     HalSPIPoll();
     HalFlashPoll();
+    HalLEDPoll();
     statusLedBlink();
-    //ledPwmPoll();
+    ledBarTestPoll();
 }
 

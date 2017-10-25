@@ -507,6 +507,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\hal\HalWait.c</FilePath>
             </File>
+            <File>
+              <FileName>HalLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\hal\HalLED.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
