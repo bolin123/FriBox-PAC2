@@ -44,6 +44,9 @@ static void statusLedInit(void)
 {
     HalGPIOConfig(HAL_STATUS_LED_PIN, HAL_IO_OUTPUT);
     HalGPIOSetLevel(HAL_STATUS_LED_PIN, HAL_STATUS_LED_ENABLE_LEVEL);
+
+    HalGPIOConfig(0x18, HAL_IO_OUTPUT);
+    HalGPIOSetLevel(0x18, 0);
 }
 
 void HalCommonStatusLedSet(uint8_t blink)
@@ -93,13 +96,92 @@ static void periphClockInit(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 }
 
+static void delay300ns(void)
+{
+    __ASM("NOP");
+}
+
+static void delay600ns(void)
+{
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+}
+
+static void delay900ns(void)
+{
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    __ASM("NOP");
+    
+}
+
+
 static void ledBarTestPoll(void)
 {
+    uint8_t i;
+		uint8_t level[8] = {0,1,0,1,0,1,0,1};
     static SysTime_t lastTime;
 
     if(SysTimeHasPast(lastTime, 1000))
     {
-        HalLEDTest();
+        for(i = 0; i < 8; i++)
+        {
+            //HalWait0P3Us(1);
+            delay900ns();
+
+            GPIO_WriteBit(GPIOB, GPIO_Pin_8, level[i]);
+        }
+        
         lastTime = SysTime();
     }
 }
@@ -114,9 +196,9 @@ void HalCommonInitialize(void)
     HalTimerInitialize();
     HalPwmInitialize();
     HalSPIInitialize();
-    HalLEDInitialize();
+    //HalLEDInitialize();
     statusLedInit();
-    HalLEDTest();
+    //HalLEDTest();
 }
 
 void HalCommonPoll(void)
@@ -126,7 +208,7 @@ void HalCommonPoll(void)
     HalTimerPoll();
     HalSPIPoll();
     HalFlashPoll();
-    HalLEDPoll();
+    //HalLEDPoll();
     statusLedBlink();
     ledBarTestPoll();
 }
