@@ -8,4 +8,3 @@ void HalLEDInitialize(void);
 void HalLEDPoll(void);
 
 #endif
-

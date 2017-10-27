@@ -2,6 +2,7 @@
 #include "HalWait.h"
 #include "HalGPIO.h"
 
+
 #define HAL_LED_CTRL_PIN 0x18
 #define HAL_LED_DECT_PIN 0x19
 
