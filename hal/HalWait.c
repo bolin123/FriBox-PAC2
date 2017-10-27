@@ -6,7 +6,7 @@ static void timerConfig0P3Us(void)
     TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 
     TIM_Cmd(TIM2, DISABLE);
-    TIM_TimeBaseStructure.TIM_Period = (24 - 1);
+    TIM_TimeBaseStructure.TIM_Period = (3 - 1);
     TIM_TimeBaseStructure.TIM_Prescaler = (1 - 1);
     TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
