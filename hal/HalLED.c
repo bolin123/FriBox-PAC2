@@ -82,19 +82,20 @@ static void ledBit(bool set)
         GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_SET);
         delay600ns();//0.6us
         GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_RESET);
-        delay600ns();//0.6us
+        delay300ns();//0.6us
     }
     else
     {
         GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_SET);
         delay300ns();//0.3u
         GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_RESET);
-        delay900ns();//0.9u
+        delay600ns();//0.9u
     }
 }
 
 static void ledDataSend(uint8_t rgb[3])
-{
+{
+
     uint8_t i, j;
     uint8_t data;
 
@@ -110,11 +111,14 @@ static void ledDataSend(uint8_t rgb[3])
 
 void HalLEDTest(void)
 {
-    uint8_t rgb[3] = {230, 0, 18};
-    ledDataSend(rgb);
-    ledDataSend(rgb);
-    ledDataSend(rgb);
-    ledDataSend(rgb);
+    uint8_t i;
+    uint8_t grb[3] = {0x8b, 0x8b, 0x7a};
+
+    for(i = 0; i < 16; i++)
+    {
+        ledDataSend(grb);
+    }
+    //GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_SET);
 }
 
 void HalLEDInitialize(void)
