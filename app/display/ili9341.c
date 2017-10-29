@@ -245,7 +245,7 @@ static void ili9341WriteData(uint16_t data)
 	//HalSPIDmaWrite((uint8_t *)&data, sizeof(uint16_t));
 	HalGPIOSetLevel(LCD_CS_PIN, 1);  //LCD_CS=1		
 }
-
+#if 0
 static void ili9341DmaWriteData(uint8_t *data, uint16_t len)
 {
  	HalGPIOSetLevel(LCD_CS_PIN, 0);  //LCD_CS=0
@@ -254,7 +254,7 @@ static void ili9341DmaWriteData(uint8_t *data, uint16_t len)
 	HalSPIDmaWrite(data, len);
 	HalGPIOSetLevel(LCD_CS_PIN, 1);  //LCD_CS=1		
 }
-
+#endif
 
 //写数据8B
 static void ili9341WriteDataByte(uint8_t data)
@@ -402,7 +402,7 @@ static void ili9341LCDDisplaychar(uint16_t x, uint16_t y,
 	*@param		x,y,ASILL,color
 	*@retvel	无
 *****************************************************************************************/
-void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, uint8_t *string, uint16_t color)
+void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, char *string, uint16_t color)
 {
 
 	while(*string != '\0')
@@ -423,6 +423,7 @@ void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t c
 	}
 }
 
+#if 0
 //画点
 static void ili9341DrawPoint(uint16_t x, uint16_t y)
 {
@@ -460,7 +461,7 @@ static void ili9341LCDFill(uint16_t xsta, uint16_t ysta, uint16_t xend, uint16_t
         }
                                               
 }  
-
+#endif
 //清屏
 static void ili9341DisplayClear(uint16_t color)
 {

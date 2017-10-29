@@ -2,7 +2,6 @@
 #include "HalWait.h"
 #include "HalGPIO.h"
 
-
 #define HAL_LED_CTRL_PIN 0x18
 #define HAL_LED_DECT_PIN 0x19
 
@@ -93,7 +92,7 @@ static void ledBit(bool set)
     }
 }
 
-static void ledDataSend(uint8_t rgb[3])
+void HalLEDColorSet(const uint8_t grb[3])
 {
 
     uint8_t i, j;
@@ -101,7 +100,7 @@ static void ledDataSend(uint8_t rgb[3])
 
     for(i = 0; i < 3; i++)
     {
-        data = rgb[i];
+        data = grb[i];
         for(j = 0; j < 8; j++)
         {
             ledBit((data << j) & 0x80);
@@ -109,17 +108,6 @@ static void ledDataSend(uint8_t rgb[3])
     }
 }
 
-void HalLEDTest(void)
-{
-    uint8_t i;
-    uint8_t grb[3] = {0x8b, 0x8b, 0x7a};
-
-    for(i = 0; i < 16; i++)
-    {
-        ledDataSend(grb);
-    }
-    //GPIO_WriteBit(GPIOB, GPIO_Pin_8, Bit_SET);
-}
 
 void HalLEDInitialize(void)
 {

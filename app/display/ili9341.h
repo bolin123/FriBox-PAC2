@@ -26,7 +26,7 @@ typedef enum
     CHAR_SIZE_TYPE_4824,
 }IliCharSizeType_t;
 
-void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, uint8_t *string, uint16_t color);
+void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, char *string, uint16_t color);
 void ILI9341Initialize(void);
 void ILI9341Poll(void);
 

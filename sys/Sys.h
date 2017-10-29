@@ -4,6 +4,7 @@
 #include "HalCommon.h"
 
 #define SYS_UART_LOGS_PORT HAL_UART_PORT_1
+#define SYS_LED_BAR_NUM 16
 
 #define SYS_DEVICE_ID_LEN 16
 #define SYS_PASSWORD_LEN   8

@@ -94,19 +94,6 @@ static void periphClockInit(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
 }
 
-static void ledBarTestPoll(void)
-{
-    uint8_t i;
-		uint8_t level[8] = {0,1,0,1,0,1,0,1};
-    static SysTime_t lastTime;
-
-    if(SysTimeHasPast(lastTime, 1000))
-    {
-        HalLEDTest();
-        
-        lastTime = SysTime();
-    }
-}
 
 void HalCommonInitialize(void)
 {
@@ -120,7 +107,6 @@ void HalCommonInitialize(void)
     HalSPIInitialize();
     HalLEDInitialize();
     statusLedInit();
-	HalLEDTest();
 }
 
 void HalCommonPoll(void)

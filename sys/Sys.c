@@ -6,6 +6,7 @@
 #include "ir.h"
 #include "Wifi.h"
 #include "Motor.h"
+#include "LEDBar.h"
 
 static uint8_t g_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 static const char g_version[] = "1.0.0.3";
@@ -88,7 +89,9 @@ void SysInitialize(void)
     IRInitialize();
     WifiInitialize();
     MotorInitialize();
+    LEDBarInitialize();
     SysLog("version %s", SysGetVersion());
+    LEDBarModeSet(LED_MODE_LOOPL, LED_COLOR_BLUE);
 }
 
 void SysPoll(void)
@@ -100,5 +103,6 @@ void SysPoll(void)
     IRPoll();
     WifiPoll();
     MotorPoll();
+    LEDBarPoll();
 }
 

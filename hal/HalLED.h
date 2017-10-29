@@ -3,7 +3,7 @@
 
 #include "HalCtype.h"
 
-void HalLEDTest(void);
+void HalLEDColorSet(const uint8_t grb[3]);
 void HalLEDInitialize(void);
 void HalLEDPoll(void);
 
