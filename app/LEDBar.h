@@ -13,9 +13,9 @@ typedef enum
 
 typedef enum
 {
-    LED_COLOR_BLUE,
+    LED_COLOR_GREEN = 0,
     LED_COLOR_RED,
-    LED_COLOR_GREEN,
+    LED_COLOR_BLUE,
 }LEDColor_t;
 
 void LEDBarModeSet(LEDMode_t mode, LEDColor_t color);
