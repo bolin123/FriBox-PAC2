@@ -447,6 +447,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\app\LEDBar.c</FilePath>
             </File>
+            <File>
+              <FileName>Display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\display\Display.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -1,12 +1,12 @@
 #include "Sys.h"
 #include "SysTimer.h"
-#include "ili9341.h"
 #include "Button.h"
 #include "PMS7003.h"
 #include "ir.h"
 #include "Wifi.h"
 #include "Motor.h"
 #include "LEDBar.h"
+#include "Display.h"
 
 static uint8_t g_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 static const char g_version[] = "1.0.0.3";
@@ -83,15 +83,15 @@ void SysInitialize(void)
     HalCommonInitialize();
     sysLogOutputInit();
     SysTimerInitialize();
-    ILI9341Initialize();
     ButtonInitialize();
     PMS7003Initailize();
     IRInitialize();
+    DisplayInitialize();
     WifiInitialize();
     MotorInitialize();
     LEDBarInitialize();
     SysLog("version %s", SysGetVersion());
-    LEDBarModeSet(LED_MODE_LOOPL, LED_COLOR_BLUE);
+    //LEDBarModeSet(LED_MODE_LOOPL, LED_COLOR_GREEN);
 }
 
 void SysPoll(void)
@@ -104,5 +104,6 @@ void SysPoll(void)
     WifiPoll();
     MotorPoll();
     LEDBarPoll();
+    DisplayPoll();
 }
 

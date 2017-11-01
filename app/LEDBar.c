@@ -72,7 +72,7 @@ static void ledCycleHandle(void)
         if(SysTimeHasPast(g_modeTime, 200))
         {
             data[g_color] = pow(2, g_cycleCount) - 1;
-            HalLEDColorSet(data);
+            allLEDColorSet(data);
             
             if(g_breathOut)//Ω•¡¡
             {
@@ -110,6 +110,7 @@ void LEDBarModeSet(LEDMode_t mode, LEDColor_t color)
 
 void LEDBarInitialize(void)
 {
+    LEDBarModeSet(LED_MODE_BRIGHT, LED_COLOR_BLUE);
 }
 
 void LEDBarPoll(void)

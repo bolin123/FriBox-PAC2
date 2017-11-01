@@ -1,7 +1,9 @@
 #include "Sys.h"
+#include "SysTimer.h"
 #include "SysButton.h"
-#include "ili9341.h"
+#include "Display.h"
 #include "Motor.h"
+#include "LEDBar.h"
 
 #define BUTTON_POWER_PIN 0x2a
 #define BUTTON_SPEED_PIN 0x2b
@@ -10,7 +12,7 @@ static SysButton_t g_powerButton;
 static SysButton_t g_gearButton;
 
 static bool g_poweron = false;
-static MotorSpeedLevel_t g_speedlevel = 1;
+static MotorSpeedLevel_t g_speedlevel = 0;
 
 static SysButtonState_t getButtonStatus(SysButton_t *button)
 {
@@ -39,9 +41,14 @@ static SysButtonState_t getButtonStatus(SysButton_t *button)
     return SYS_BUTTON_STATE_RELEASED;
 }
 
+static void netconfigTimeout(void *args)
+{
+    DisplayNetStatus(SYS_NET_STATUS_CONNECT);
+    LEDBarModeSet(LED_MODE_BRIGHT, LED_COLOR_BLUE);
+}
+
 static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonState_t state)
 {
-    char buff[16] = "";
     static bool powerLongPress = false;
     static bool gearLongPress = false;
     
@@ -54,11 +61,13 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
                 g_poweron = !g_poweron;
                 if(g_poweron)
                 {
-                    Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:ON ", LCD_COLOR_GRAY);
+                    //Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
+                    //DisplayOn();
                 }
                 else
                 {
-                    Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:OFF", LCD_COLOR_GRAY);
+                    //Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
+                    //DisplayOff();
                 }
             }
             else if(button == &g_gearButton)
@@ -66,14 +75,13 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
                 g_speedlevel++;
                 if(g_speedlevel > 3)
                 {
-                    g_speedlevel = 1;
+                    g_speedlevel = 0;
                 }
                 MotorSpeedSet(1, g_speedlevel);
                 MotorSpeedSet(2, g_speedlevel);
                 MotorSpeedSet(3, g_speedlevel);
                 MotorSpeedSet(4, g_speedlevel);
-                sprintf(buff, "SPEED:%02d", g_speedlevel);
-                Ili9341LCDDisplayString(0, 250, 24, 48, buff, LCD_COLOR_GRAY);
+                DisplaySpeedLevel(g_speedlevel);
             }
             return 1;
         }
@@ -100,6 +108,9 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
             SysNetConfigStart();
             powerLongPress = false;
             gearLongPress = false;
+            DisplayNetStatus(SYS_NET_STATUS_NETCONFIG);
+            LEDBarModeSet(LED_MODE_BREATH, LED_COLOR_GREEN);
+            SysTimerSet(netconfigTimeout, 60000, 0, NULL);
         }
     }
     return 0;
@@ -114,8 +125,6 @@ void ButtonInitialize(void)
     
     SysButtonRegister(&g_powerButton, buttonHandle, getButtonStatus);
     SysButtonRegister(&g_gearButton, buttonHandle, getButtonStatus);
-    Ili9341LCDDisplayString(0, 200, 24, 48, "POWER:OFF", LCD_COLOR_GRAY);
-    Ili9341LCDDisplayString(0, 250, 24, 48, "SPEED:01", LCD_COLOR_GRAY);
 }
 
 void ButtonPoll(void)

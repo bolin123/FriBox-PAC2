@@ -25,6 +25,13 @@
 #define SysLog(...)
 #endif
 
+typedef enum
+{
+    SYS_NET_STATUS_DISCONNECT,
+    SYS_NET_STATUS_CONNECT,
+    SYS_NET_STATUS_NETCONFIG,
+}SysNetStatus_t;
+
 typedef struct
 {
     uint16_t year;

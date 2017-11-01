@@ -18,7 +18,8 @@ void IRPoll(void)
         oldStatus = HalGPIOGetLevel(IR_INPUT_PIN);
         //SysLog("ir level %d", oldStatus);
         sprintf(buff, "IR pin:%d", oldStatus);
-        Ili9341LCDDisplayString(0, 50, 24, 48, buff, LCD_COLOR_GRAY);
+
+        //Ili9341LCDAssiiDisplay(0, 50, LCD_ASIIC_SIZE_48X24, buff, LCD_COLOR_GRAY);
     }
 }
 

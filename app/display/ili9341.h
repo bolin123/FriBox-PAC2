@@ -18,6 +18,12 @@
 #define LCD_COLOR_BRRED 			 0XFC07 //?¨¢?o¡§?¡§|?
 #define LCD_COLOR_GRAY  			 0X8430 //?¡§¡ã¡§|?
 
+typedef enum
+{
+    LCD_ASIIC_SIZE_16X08,
+    LCD_ASIIC_SIZE_48X24,
+    LCD_ASIIC_SIZE_97X48,
+}LCDAsiicSize_t;
 
 typedef enum
 {
@@ -26,7 +32,10 @@ typedef enum
     CHAR_SIZE_TYPE_4824,
 }IliCharSizeType_t;
 
-void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, char *string, uint16_t color);
+void Ili9341LCDDisplayOff(void);
+void Ili9341LCDDisplayOn(void);
+void Ili9341LCDAssiiDisplay(uint16_t x, uint16_t y, LCDAsiicSize_t size,  char *string, uint16_t color);
+//void Ili9341LCDDisplayString(uint16_t x, uint16_t y, uint16_t cwidth, uint16_t cheigh, char *string, uint16_t color);
 void ILI9341Initialize(void);
 void ILI9341Poll(void);
 

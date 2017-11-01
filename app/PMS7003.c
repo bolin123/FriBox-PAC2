@@ -1,6 +1,6 @@
 #include "PMS7003.h"
 #include "Sys.h"
-#include "ili9341.h"
+#include "Display.h"
 
 #define PMS7003_SET_PIN   0x00
 #define PMS7003_RESET_PIN 0x01
@@ -42,13 +42,13 @@ static void pmDataUpdate(uint16_t pm2p5, uint16_t pm10)
     char text[24] = "";
 
     SysLog("pm2.5 = %d, pm10 = %d", pm2p5, pm10);
-    //sprintf(text, "    %d  ", pm2p5);
-    //Ili9341LCDDisplayString(PM2P5_X_POS, PM2P5_Y_POS, 24, 48, text, LCD_COLOR_GREEN);
+    DisplayPM2p5Value(pm2p5);
 
-    sprintf(text, "PM2.5:%03d", pm2p5);
-    Ili9341LCDDisplayString(0, 100, 24, 48, text, LCD_COLOR_GRAY);
-    sprintf(text, "PM10:%03d", pm10);
-    Ili9341LCDDisplayString(0, 150, 24, 48, text, LCD_COLOR_GRAY);
+    //sprintf(text, "PM2.5:%03d", pm2p5);
+    //Ili9341LCDAssiiDisplay(0, 100, LCD_ASIIC_SIZE_48X24, text, LCD_COLOR_GRAY);
+    
+    //sprintf(text, "PM10:%03d", pm10);
+    //Ili9341LCDAssiiDisplay(0, 150, LCD_ASIIC_SIZE_48X24, text, LCD_COLOR_GRAY);
 }
 
 static void dataRecv(uint8_t *data, uint16_t len)

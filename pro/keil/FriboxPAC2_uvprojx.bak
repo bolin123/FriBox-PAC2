@@ -442,6 +442,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\app\Motor.c</FilePath>
             </File>
+            <File>
+              <FileName>LEDBar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\LEDBar.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
