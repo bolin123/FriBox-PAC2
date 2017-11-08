@@ -1,46 +1,6 @@
 #include "HalPwm.h"
 #include "stm32f10x_tim.h"
 
-static void ledPwmInit(void)
-{
-    GPIO_InitTypeDef GPIO_InitStructure;
-
-    GPIO_PinRemapConfig(GPIO_Remap_TIM4, DISABLE);
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_8; 
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;           // 复用推挽输出 
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
-    GPIO_Init(GPIOB, &GPIO_InitStructure); 
-#if 1
-    
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_9; 
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;           // 复用推挽输出 
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
-    GPIO_Init(GPIOB, &GPIO_InitStructure); 
-    //GPIO_WriteBit(GPIOB, GPIO_Pin_9, Bit_RESET);
-#endif
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
-    TIM_TimeBaseStructure.TIM_Period = 100 - 1;   //1s
-    TIM_TimeBaseStructure.TIM_Prescaler = 72 -1; //720分频
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;//向上计数
-    TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
-    TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update);
-    TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);
-
-      
-    TIM_OCInitTypeDef TIM_OCInitStructure;
-    TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;//PWM1模式1
-    TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;//比较输出使能
-    TIM_OCInitStructure.TIM_Pulse = 50; //设置占空比
-    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_Low; //输出比较极性高
-    TIM_OC3Init(TIM4, &TIM_OCInitStructure);//初始化TIM4的CH3通道
-
-    TIM_Cmd(TIM4, ENABLE);//使能定时器4
-    TIM_CtrlPWMOutputs(TIM4, ENABLE);
-}
-
 void HalPwmPluseSet(uint8_t pwmNo, uint8_t chn, uint16_t pluse)
 {
     if(pwmNo == HAL_PWM_NUM_1)

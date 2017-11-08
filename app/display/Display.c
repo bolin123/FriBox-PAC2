@@ -52,7 +52,7 @@ void DisplaySpeedLevel(uint8_t level)
 void DisplayConsumables(uint8_t per)
 {
     char text[4] = "";
-    sprintf(text, "%02dp", per);
+    sprintf(text, "%02d@", per);
     Ili9341LCDAssiiDisplay(108, 262 + DISPLAY_HEIGH_OFFSET, LCD_ASIIC_SIZE_16X08, text, LCD_COLOR_GRAY);
 }
 

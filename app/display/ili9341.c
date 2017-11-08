@@ -100,15 +100,21 @@ static void ili9341WriteRamPrepare(void)
     ili9341WriteReg(0X2C);  //写入GRAM
 }
 
+void Ili9341LCDSetBrightness(uint8_t bright)
+{
+}
+
 //LCD开启显示        ILI9341
 void Ili9341LCDDisplayOn(void)
 {                                           
     ili9341WriteReg(0X29); //26万色显示开启
+    HalGPIOSetLevel(LCD_LED_PIN, 0);
 }         
 //LCD关闭显示        ILI9341
 void Ili9341LCDDisplayOff(void)
 {           
     ili9341WriteReg(0X28);//关闭显示 
+    HalGPIOSetLevel(LCD_LED_PIN, 1);
 }
 
 //从ILI93xx读出的数据为GBR格式，而我们写入的时候为RGB格式。
@@ -544,6 +550,8 @@ static void configILI9341(void)
     ili9341WriteDataByte(0x31); 
     ili9341WriteDataByte(0x36); 
     ili9341WriteDataByte(0x0F); 
+
+    
 #endif
     ili9341WriteReg(0x11);    //Exit Sleep 
     HalWaitMs(120);
@@ -551,7 +559,6 @@ static void configILI9341(void)
     ili9341WriteReg(0x29);    //Display on 
     
 	ili9341DisplayClear(LCD_COLOR_BLACK); //corlor
-	//showqq();
 }
 
 static void restartILI9341(void)

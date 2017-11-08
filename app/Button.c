@@ -61,13 +61,11 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
                 g_poweron = !g_poweron;
                 if(g_poweron)
                 {
-                    //Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
-                    //DisplayOn();
+                    DisplayOn();
                 }
                 else
                 {
-                    //Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
-                    //DisplayOff();
+                    DisplayOff();
                 }
             }
             else if(button == &g_gearButton)

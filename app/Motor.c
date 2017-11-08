@@ -1,6 +1,13 @@
 #include "Sys.h"
 #include "Motor.h"
 
+static const uint8_t g_pluse[4][4] = {
+    {},
+    {},
+    {},
+    {},
+};
+
 void MotorSpeedSet(uint8_t ch, MotorSpeedLevel_t level)
 {
     uint16_t pluse = level * 20;
