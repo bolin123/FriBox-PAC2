@@ -1,18 +1,15 @@
 #include "Sys.h"
 #include "SysTimer.h"
 #include "SysButton.h"
-#include "Display.h"
-#include "Motor.h"
-#include "LEDBar.h"
 
 #define BUTTON_POWER_PIN 0x2a
 #define BUTTON_SPEED_PIN 0x2b
 
+#define BUTTON_LONG_PRESS_TIME  5000
+
 static SysButton_t g_powerButton;
 static SysButton_t g_gearButton;
-
-static bool g_poweron = false;
-static MotorSpeedLevel_t g_speedlevel = 0;
+static ButtonEventHandle_t g_buttonHandle = NULL;
 
 static SysButtonState_t getButtonStatus(SysButton_t *button)
 {
@@ -41,45 +38,20 @@ static SysButtonState_t getButtonStatus(SysButton_t *button)
     return SYS_BUTTON_STATE_RELEASED;
 }
 
-static void netconfigTimeout(void *args)
-{
-    DisplayNetStatus(SYS_NET_STATUS_CONNECT);
-    LEDBarModeSet(LED_MODE_BRIGHT, LED_COLOR_BLUE);
-}
-
 static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonState_t state)
 {
-    static bool powerLongPress = false;
-    static bool gearLongPress = false;
     
     if(state == SYS_BUTTON_STATE_RELEASED)
     {
-        if(pressTime > 20)
+        if(pressTime > 20 && pressTime < 2000)
         {
             if(button == &g_powerButton)
             {
-                g_poweron = !g_poweron;
-                if(g_poweron)
-                {
-                    DisplayOn();
-                }
-                else
-                {
-                    DisplayOff();
-                }
+                g_buttonHandle(BUTTON_EVENT_POWER_PUSH);
             }
             else if(button == &g_gearButton)
             {
-                g_speedlevel++;
-                if(g_speedlevel > 3)
-                {
-                    g_speedlevel = 0;
-                }
-                MotorSpeedSet(1, g_speedlevel);
-                MotorSpeedSet(2, g_speedlevel);
-                MotorSpeedSet(3, g_speedlevel);
-                MotorSpeedSet(4, g_speedlevel);
-                DisplaySpeedLevel(g_speedlevel);
+                g_buttonHandle(BUTTON_EVENT_SPEED_PUSH);
             }
             return 1;
         }
@@ -88,30 +60,28 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
     {
         if(button == &g_powerButton)
         {
-            if(pressTime > 5000)
+            if(pressTime > BUTTON_LONG_PRESS_TIME)
             {
-                powerLongPress = true;
+                g_buttonHandle(BUTTON_EVENT_POWER_LONG_PUSH);
+                return 1;
             }
         }
         else if(button == &g_gearButton)
         {
-            if(pressTime > 5000)
+            if(pressTime > BUTTON_LONG_PRESS_TIME)
             {
-                gearLongPress = true;
+                g_buttonHandle(BUTTON_EVENT_SPEED_LONG_PUSH);
+                return 1;
             }
         }
 
-        if(powerLongPress && gearLongPress)
-        {
-            SysNetConfigStart();
-            powerLongPress = false;
-            gearLongPress = false;
-            DisplayNetStatus(SYS_NET_STATUS_NETCONFIG);
-            LEDBarModeSet(LED_MODE_BREATH, LED_COLOR_GREEN);
-            SysTimerSet(netconfigTimeout, 60000, 0, NULL);
-        }
     }
     return 0;
+}
+
+void ButtonEventRegiste(ButtonEventHandle_t handle)
+{
+    g_buttonHandle = handle;
 }
 
 void ButtonInitialize(void)

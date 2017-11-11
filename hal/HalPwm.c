@@ -7,16 +7,16 @@ void HalPwmPluseSet(uint8_t pwmNo, uint8_t chn, uint16_t pluse)
     {
         switch(chn)
         {
-            case 1:
+            case 0:
                 TIM_SetCompare1(TIM3, pluse);
                 break;
-            case 2:
+            case 1:
                 TIM_SetCompare2(TIM3, pluse);
                 break;
-            case 3:
+            case 2:
                 TIM_SetCompare3(TIM3, pluse);
                 break;
-            case 4:
+            case 3:
                 TIM_SetCompare4(TIM3, pluse);
                 break;
             default:
