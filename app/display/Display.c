@@ -59,11 +59,6 @@ void DisplayConsumables(uint8_t per)
 void DisplayInitialize(void)
 {
     ILI9341Initialize();
-    DisplayNetStatus(SYS_NET_STATUS_CONNECT);
-    DisplayDeviceUID("0001023");
-    DisplayPM2p5Value(0);
-    DisplaySpeedLevel(0);
-    DisplayConsumables(96);
 }
 
 void DisplayOn(void)

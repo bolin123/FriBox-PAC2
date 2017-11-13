@@ -2,14 +2,16 @@
 
 void PMPowerOn(void)
 {
-    //diplay on
-    //sensor on
+    LEDBarModeSet(LED_MODE_BRIGHT, LED_COLOR_BLUE);
+    MotorSpeedSet((uint8_t)PropertyGetValue(PROPERTY_ID_GEAR));
+    DisplayOn();
 }
 
 void PMPowerOff(void)
 {
-    //diplay off
-    //sensor off
+    LEDBarModeSet(LED_MODE_SHUTDOWN, LED_COLOR_GREEN);
+    MotorSpeedSet(0);
+    DisplayOff();
 }
 
 void PMInitialize(void)
