@@ -1,12 +1,19 @@
 #include "APP.h"
+#include "Motor.h"
+#include "LEDBar.h"
 #include "Display.h"
 #include "Button.h"
 #include "Property.h"
+#include "PowerManager.h"
+#include "Property.h"
+#include "Wifi.h"
 
 static void buttonEventHandle(ButtonEvent_t event)
 {
     bool power;
     uint16_t gear;
+
+    SysLog("event %d", event);
     switch(event)
     {
         case BUTTON_EVENT_SPEED_PUSH:
@@ -23,12 +30,7 @@ static void buttonEventHandle(ButtonEvent_t event)
             MotorSpeedSet((uint8_t)PropertyGetValue(PROPERTY_ID_GEAR));
             break;
         case BUTTON_EVENT_POWER_PUSH:
-            power = PropertyGetValue(PROPERTY_ID_POWER);
-            PropertySetValue(PROPERTY_ID_POWER, !power);
-            if(!power)
-            {
-                PMPowerOn();
-            }
+
             break;
         case BUTTON_EVENT_SPEED_LONG_PUSH:
             gear = PropertyGetValue(PROPERTY_ID_GEAR);
@@ -48,8 +50,13 @@ static void buttonEventHandle(ButtonEvent_t event)
             power = PropertyGetValue(PROPERTY_ID_POWER);
             if(power)
             {
-                //PropertySetValue(PROPERTY_ID_POWER, 0);
+                PropertySetValue(PROPERTY_ID_POWER, 0);
                 PMPowerOff();
+            }
+            else
+            {
+                PropertySetValue(PROPERTY_ID_POWER, 1);
+                PMPowerOn();
             }
             break;
         default:
@@ -68,10 +75,14 @@ static void lcdDisplay(void)
 
 void APPInitialize(void)
 {
+    PMInitialize();
     lcdDisplay();
+    ButtonEventRegiste(buttonEventHandle);
+    PropertySetValue(PROPERTY_ID_POWER, 1);
 }
 
 void APPPoll(void)
 {
+    PMPoll();
 }
 

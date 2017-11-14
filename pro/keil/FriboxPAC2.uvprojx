@@ -452,6 +452,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\app\display\Display.c</FilePath>
             </File>
+            <File>
+              <FileName>APP.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\APP.c</FilePath>
+            </File>
+            <File>
+              <FileName>PowerManager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\PowerManager.c</FilePath>
+            </File>
+            <File>
+              <FileName>Property.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\app\Property.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

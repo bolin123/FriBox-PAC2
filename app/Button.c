@@ -1,3 +1,4 @@
+#include "Button.h"
 #include "Sys.h"
 #include "SysTimer.h"
 #include "SysButton.h"
@@ -47,11 +48,25 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
         {
             if(button == &g_powerButton)
             {
-                g_buttonHandle(BUTTON_EVENT_POWER_PUSH);
+                if(g_powerButton.longPress)
+                {
+                    g_powerButton.longPress = false;
+                }
+                else
+                {
+                    g_buttonHandle(BUTTON_EVENT_POWER_PUSH);
+                }
             }
             else if(button == &g_gearButton)
             {
-                g_buttonHandle(BUTTON_EVENT_SPEED_PUSH);
+                if(g_gearButton.longPress)
+                {
+                    g_gearButton.longPress = false;
+                }
+                else
+                {
+                    g_buttonHandle(BUTTON_EVENT_SPEED_PUSH);
+                }
             }
             return 1;
         }
@@ -60,17 +75,19 @@ static uint8_t buttonHandle(SysButton_t *button, SysTime_t pressTime, SysButtonS
     {
         if(button == &g_powerButton)
         {
-            if(pressTime > BUTTON_LONG_PRESS_TIME)
+            if(pressTime > BUTTON_LONG_PRESS_TIME && !g_powerButton.longPress)
             {
                 g_buttonHandle(BUTTON_EVENT_POWER_LONG_PUSH);
+                g_powerButton.longPress = true;
                 return 1;
             }
         }
         else if(button == &g_gearButton)
         {
-            if(pressTime > BUTTON_LONG_PRESS_TIME)
+            if(pressTime > BUTTON_LONG_PRESS_TIME && !g_powerButton.longPress)
             {
                 g_buttonHandle(BUTTON_EVENT_SPEED_LONG_PUSH);
+                g_gearButton.longPress = true;
                 return 1;
             }
         }

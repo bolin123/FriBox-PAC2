@@ -23,6 +23,7 @@ struct SysButton_st
 {
     SysButtonState_t lastState;
     uint8_t handled;
+    bool longPress;
     SysTime_t pressedTime;
     SysButtonHandler_t handler;
     SysButtonGetState_t getState;

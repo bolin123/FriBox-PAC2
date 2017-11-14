@@ -1,4 +1,3 @@
-#include "Sys.h"
 #include "Motor.h"
 
 #define MOTOR_MAX_NUM   4

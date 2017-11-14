@@ -100,12 +100,21 @@ static void ledCycleHandle(void)
 
 void LEDBarModeSet(LEDMode_t mode, LEDColor_t color)
 {
-    allLEDColorSet(getColorData(color));
+    if(mode == LED_MODE_SHUTDOWN)
+    {
+        allLEDColorSet((uint8_t *)HAL_LED_COLOR_NONE);
+    }
+    else
+    {
+        allLEDColorSet(getColorData(color));
+        g_color = color;
+        g_modeTime = SysTime();
+        g_cycleCount = 0;
+        g_breathOut = true;
+    }
+    
     g_mode = mode;
-    g_color = color;
-    g_modeTime = SysTime();
-    g_cycleCount = 0;
-    g_breathOut = true;
+    
 }
 
 void LEDBarInitialize(void)

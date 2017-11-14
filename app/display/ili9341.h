@@ -5,18 +5,18 @@
 
 #define LCD_COLOR_WHITE         	 0xFFFF
 #define LCD_COLOR_BLACK         	 0x0000	  
-#define LCD_COLOR_BLUE         	 0x001F  
-#define LCD_COLOR_BRED             0XF81F
-#define LCD_COLOR_GRED 			 0XFFE0
-#define LCD_COLOR_GBLUE			 0X07FF
+#define LCD_COLOR_BLUE         	     0x001F  
+#define LCD_COLOR_BRED               0XF81F
+#define LCD_COLOR_GRED 			     0XFFE0 //桔黄
+#define LCD_COLOR_GBLUE			     0X07FF
 #define LCD_COLOR_RED           	 0xF800
-#define LCD_COLOR_MAGENTA       	 0xF81F
+#define LCD_COLOR_MAGENTA       	 0xF81F //紫红色
 #define LCD_COLOR_GREEN         	 0x07E0
-#define LCD_COLOR_CYAN          	 0x7FFF
+#define LCD_COLOR_CYAN          	 0x7FFF //青色
 #define LCD_COLOR_YELLOW        	 0xFFE0
-#define LCD_COLOR_BROWN 			 0XBC40 //?á?¨|?
-#define LCD_COLOR_BRRED 			 0XFC07 //?á?o¨?¨|?
-#define LCD_COLOR_GRAY  			 0X8430 //?¨°¨|?
+#define LCD_COLOR_BROWN 			 0XBC40 //棕色的
+#define LCD_COLOR_BRRED 			 0XFC07 //橙色
+#define LCD_COLOR_GRAY  			 0X8430 //灰白
 
 typedef enum
 {

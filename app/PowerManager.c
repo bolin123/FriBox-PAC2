@@ -1,4 +1,8 @@
 #include "PowerManager.h"
+#include "LEDBar.h"
+#include "Display.h"
+#include "Motor.h"
+#include "Property.h"
 
 void PMPowerOn(void)
 {

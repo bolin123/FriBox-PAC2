@@ -33,9 +33,34 @@ void DisplayDeviceUID(char *uid)
 void DisplayPM2p5Value(uint16_t value)
 {
     char text[4] = "";
+    uint16_t color;
 
+    if(value <= 34)
+    {
+        color = LCD_COLOR_GREEN;
+    }
+    else if(value <= 74 && value > 34)
+    {
+        color = LCD_COLOR_YELLOW;
+    }
+    else if(value <= 115 && value > 74)
+    {
+        color = LCD_COLOR_GRED;
+    }
+    else if(value <= 150 && value > 115)
+    {  
+        color = LCD_COLOR_BRRED;
+    }
+    else if(value <= 250 && value > 150)
+    {
+        color = LCD_COLOR_RED;
+    }
+    else
+    {
+        color = LCD_COLOR_MAGENTA;
+    }
     sprintf(text, "%03d", value);
-    Ili9341LCDAssiiDisplay(50, 111 + DISPLAY_HEIGH_OFFSET, LCD_ASIIC_SIZE_97X48, text, LCD_COLOR_GREEN);
+    Ili9341LCDAssiiDisplay(50, 111 + DISPLAY_HEIGH_OFFSET, LCD_ASIIC_SIZE_97X48, text, color);
 }
 
 void DisplayDateTime(SysDateTime_t *time)

@@ -4,8 +4,8 @@
 
 void PMPowerOff(void);
 void PMPowerOn(void);
-void PowerManagerInitialize(void);
-void PowerManagerPoll(void);
+void PMInitialize(void);
+void PMPoll(void);
 
 #endif
 

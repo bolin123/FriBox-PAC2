@@ -1,6 +1,8 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
+#include "Sys.h"
+
 typedef enum
 {
     PROPERTY_ID_POWER = 0,

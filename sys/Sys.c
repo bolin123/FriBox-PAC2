@@ -7,9 +7,10 @@
 #include "Motor.h"
 #include "LEDBar.h"
 #include "Display.h"
+#include "APP.h"
 
 static uint8_t g_mac[6] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-static const char g_version[] = "1.0.0.3";
+static const char g_version[] = "1.0.0.4";
 
 //redirect "printf()"
 int fputc(int ch, FILE *f)
@@ -90,6 +91,8 @@ void SysInitialize(void)
     WifiInitialize();
     MotorInitialize();
     LEDBarInitialize();
+
+    APPInitialize();
     SysLog("version %s", SysGetVersion());
     //LEDBarModeSet(LED_MODE_LOOPL, LED_COLOR_GREEN);
 }
@@ -105,5 +108,6 @@ void SysPoll(void)
     MotorPoll();
     LEDBarPoll();
     DisplayPoll();
+    APPPoll();
 }
 

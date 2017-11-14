@@ -1,12 +1,3 @@
----- Ili9341LCDAssiiDisplay Matches (11 in 5 files) ----
-Button.c (app):                    Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
-Button.c (app):                    Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:ON ", LCD_COLOR_GRAY);
-Button.c (app):                Ili9341LCDAssiiDisplay(0, 250, LCD_ASIIC_SIZE_48X24, buff, LCD_COLOR_GRAY);
-Button.c (app):    Ili9341LCDAssiiDisplay(0, 200, LCD_ASIIC_SIZE_48X24, "POWER:OFF", LCD_COLOR_GRAY);
-Button.c (app):    Ili9341LCDAssiiDisplay(0, 250, LCD_ASIIC_SIZE_48X24, "SPEED:01", LCD_COLOR_GRAY);
-ili9341.c (app\display):void Ili9341LCDAssiiDisplay(uint16_t x, uint16_t y, LCDAsiicSize_t size,  char *string, uint16_t color)
-ili9341.c (app\display):    Ili9341LCDAssiiDisplay(0, 0, LCD_ASIIC_SIZE_24X12, "FriBoxPAC2", LCD_COLOR_GRAY);
-ili9341.h (app\display):void Ili9341LCDAssiiDisplay(uint16_t x, uint16_t y, LCDAsiicSize_t size,  char *string, uint16_t color);
-ir.c (app):        Ili9341LCDAssiiDisplay(0, 50, LCD_ASIIC_SIZE_48X24, buff, LCD_COLOR_GRAY);
-PMS7003.c (app):    Ili9341LCDAssiiDisplay(0, 100, LCD_ASIIC_SIZE_48X24, text, LCD_COLOR_GRAY);
-PMS7003.c (app):    Ili9341LCDAssiiDisplay(0, 150, LCD_ASIIC_SIZE_48X24, text, LCD_COLOR_GRAY);
+---- PMInitialize Matches (2 in 2 files) ----
+APP.c (app):    PMInitialize();
+PowerManager.c (app):void PMInitialize(void)
